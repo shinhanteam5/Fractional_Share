@@ -13,3 +13,5 @@ class StockList(models.Model):
         db_table ="stock_list"
         verbose_name="주식리스트"
         verbose_name_plural ="주식리스트"
+
+
