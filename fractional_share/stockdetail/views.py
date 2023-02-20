@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import StockDetail
 from holdingstock.models import HoldingStock
+from portfolio.models import Portfolio
 from .serializers import StockDetailSerializer,BuyStockSerializer
 from django.http.response import JsonResponse
 class StockDetailView(
@@ -59,4 +60,9 @@ class BuyStockView(
     def get_queryset(self):
         return HoldingStock.objects.all().order_by('id')
     def post(self,request,*args,**kwargs):
-        return self.create(request,args,kwargs)
+        print(request.POST.get("invest_amount"))
+        a = self.create(request,args,kwargs)
+        p = Portfolio.objects.get()
+        p.total_invest += int(request.POST.get("invest_amount"))
+        p.save()
+        return a
