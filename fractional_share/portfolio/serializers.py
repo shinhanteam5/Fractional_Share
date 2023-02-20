@@ -4,10 +4,18 @@ from holdingstock.models import HoldingStock
 
 class PortfolioSerializer(serializers.ModelSerializer):
 
-    # stock_name = serializers.SerializerMethodField()
-    # # stock_share = serializers.SerializerMethodField()
-    # def get_stock_name(self,obj):
-    #     return obj.holdingstock.stock_name
+    stocks = serializers.SerializerMethodField()
+
+    def get_stocks(self, obj):
+        return [
+            {
+                'stock_name': s.stock_name,
+                'stock_share': s.stock_share, 
+                'invest_amount': s.invest_amount,
+                'earn_rate': s.earn_rate,
+            }
+            for s in obj.holdingstock_set.all()
+        ]
     class Meta:
         model = Portfolio
         fields = "__all__"

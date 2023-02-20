@@ -18,7 +18,8 @@ class PortfolioDetailView(
     # permission_classes =[IsAuthenticated]
 
     def get_queryset(self):
-        portfolios = Portfolio.objects.all()
+        #  products = Product.objects.all().prefetch_related("holdingstock_set")
+        portfolios = Portfolio.objects.all().prefetch_related("holdingstock_set")
         return portfolios.order_by('id')
 
 
