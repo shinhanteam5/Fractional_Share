@@ -1,8 +1,9 @@
 from django.db import models
 
+
 # Create your models here.
 class Portfolio(models.Model):
-    # stock_id = models.CharField(max_length=16,verbose_name='stock_id')
+    user_id = models.ForeignKey('member.Member',on_delete=models.CASCADE,verbose_name="포트폴리오명")
     total_invest = models.IntegerField(verbose_name='total_invest')
     total_rate = models.IntegerField(verbose_name='total_rate')
     total_earn = models.IntegerField(verbose_name='total_earn')
