@@ -87,8 +87,9 @@ class BuyStockView(
         return HoldingStock.objects.all().order_by('id')
     def post(self,request,*args,**kwargs):
         a = self.create(request,args,kwargs)
+
         p = Portfolio.objects.get()
-        p.total_invest += int(request.POST.get("invest_amount"))
+        p.total_invest += int(request.POST.get("invest_amount"))-int(request.POST.get("invest_amount"))*0.01
         p.save()
         return a
     
