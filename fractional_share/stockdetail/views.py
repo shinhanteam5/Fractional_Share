@@ -6,52 +6,58 @@ from holdingstock.models import HoldingStock
 from portfolio.models import Portfolio
 from .serializers import StockDetailSerializer,BuyStockSerializer
 from django.http.response import JsonResponse
+from bs4 import BeautifulSoup
+import requests
 class StockDetailView(
     mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     generics.GenericAPIView,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
 ):
     serializer_class=StockDetailSerializer
 
     def get_queryset(self):
-        return StockDetail.objects.all().order_by('id')
-
+        stock_code = self.kwargs.get('pk')
+        return StockDetail.objects.filter(stock_code=stock_code).order_by('id')
+#
     def get(self,request,*args,**kwargs):
-        return self.retrieve(request,args,kwargs)
-
-    def delete(self,request,*args,**kwargs):
-        return self.destroy(request,args,kwargs)
-
-    def put(self,request,*args,**kwargs):
-        return self.partial_update(request,args,kwargs)
+        return self.list(request,args,kwargs)
 
 
-def buy(request):
+def submit(request,stock_code):
     # if not request.user.is_authenticated:
     #     return redirect('/member/login/')
-
+    print(request.POST.get("clpr"))
     if request.method == 'POST':
-        holdingstock = HoldingStock(
-            # member=request.POST.get("member"),
-            # portfolio_id=request.POST.get("portfolio_id"),
-            # stock_name=request.POST.get("stock_name"),
-            # stock_share=request.POST.get("stock_share"),
-            # invest_amount=request.POST.get("location"),
-            # earn_rate=request.POST.get("location"),
+        url = 'https://finance.naver.com/item/main.naver?code='+str(stock_code)
+        response = requests.get(url)
+        html = response.text
+        soup = BeautifulSoup(html, 'html.parser')
 
-            member=1,
-            portfolio_id=1,
-            stock_name="helo",
-            stock_share=0.1,
-            invest_amount=1000,
-            earn_rate=0.1,
-
+        stockdetail = StockDetail(
+                stock_code =  stock_code,
+                current_price =request.POST.get("clpr"),
+                name =request.POST.get("itmsNm"),
+                earn = request.POST.get("vs"),
+                earn_rate =request.POST.get("fltRt"),
+                info =soup.select_one('#summary_info').get_text(),
+                profit1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(2)').get_text().strip().replace(",","")),
+                profit2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(3) > em').get_text().strip().replace(",","")),
+                profit3 =int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(4)').get_text().strip().replace(",","")),
+                sales1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(2)').get_text().strip().replace(",","")),
+                sales2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(3)').get_text().strip().replace(",","")),
+                sales3 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(4)').get_text().strip().replace(",","")),
+                week = 'https://ssl.pstatic.net/imgfinance/chart/item/area/week/'+str(stock_code)+'.png?sidcode=1676905742196',
+                month3 = 'https://ssl.pstatic.net/imgfinance/chart/item/area/month3/'+str(stock_code)+'.png?sidcode=1676905742196',
+                year = 'https://ssl.pstatic.net/imgfinance/chart/item/area/year/'+str(stock_code)+'.png?sidcode=1676905742196',
+                year3 = 'https://ssl.pstatic.net/imgfinance/chart/item/area/year3/'+str(stock_code)+'.png?sidcode=1676905742196',
         )
         # print(product.id) # 에러!
-        holdingstock.save()
-        return JsonResponse("ok")
-
+        stockdetail.save()
+        return JsonResponse("OK",safe=False)
+    return JsonResponse("OK",safe=False)
 class BuyStockView(
     mixins.CreateModelMixin,
     generics.GenericAPIView

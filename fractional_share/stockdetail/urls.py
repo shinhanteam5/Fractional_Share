@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
-from stockdetail.views import buy
+from stockdetail.views import submit
 urlpatterns = [
     path("/<int:pk>", views.StockDetailView.as_view()),
-    # path("/buy",buy),
+    path("/submit/<int:stock_code>",submit),
     path("/buy",views.BuyStockView.as_view()),
 
 ]
