@@ -1,10 +1,10 @@
 from rest_framework import mixins, generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import StockDetail
+from .models import StockDetail,News
 from holdingstock.models import HoldingStock
 from portfolio.models import Portfolio
-from .serializers import StockDetailSerializer,BuyStockSerializer
+from .serializers import StockDetailSerializer,BuyStockSerializer,NewsSerializer
 from django.http.response import JsonResponse
 from bs4 import BeautifulSoup
 import requests
@@ -79,3 +79,22 @@ class BuyStockView(
         p.total_invest += int(request.POST.get("invest_amount"))
         p.save()
         return a
+    
+
+class NewsListView(
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+
+):
+    serializer_class = NewsSerializer
+
+    def get_queryset(self):
+        stock_code = self.kwargs.get('pk')
+				# 쿼리개선
+        if stock_code:
+            return News.objects.filter(stock_code=stock_code).order_by('-id') 
+        return News.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+    
