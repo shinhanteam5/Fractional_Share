@@ -14,10 +14,8 @@ class StockDetailSerializer(serializers.ModelSerializer):
 
 class BuyStockSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
-        request = self.context['request']
-        print(request)
-        # if request.user.is_authenticated:
         attrs['member_id']=1
+        attrs['invest_amount']=attrs['invest_amount']-attrs['invest_amount']*0.01
         # else:
         #     raise serializers.ValidationError("member is required")
         return attrs
