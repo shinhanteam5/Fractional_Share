@@ -30,17 +30,17 @@ class StockDetailView(
 def submit(request,stock_code):
     # if not request.user.is_authenticated:
     #     return redirect('/member/login/')
+    print(request.POST)
     if request.method == 'POST':
         if len(str(stock_code)) != 6:
             for _ in range(6 - len(str(stock_code))):
                 stock_code = '0' + str(stock_code)
-                
+
         url = 'https://finance.naver.com/item/main.naver?code='+str(stock_code)
         response = requests.get(url)
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
 
-        print(soup.select_one('#summary_info'))
         stockdetail = StockDetail(
                 stock_code =  stock_code,
                 current_price =request.POST.get("clpr"),
