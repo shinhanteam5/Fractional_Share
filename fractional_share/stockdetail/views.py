@@ -64,6 +64,19 @@ def submit(request,stock_code):
         )
         # print(product.id) # 에러!
         stockdetail.save()
+        news  = soup.select('#content > div.section.new_bbs > div.sub_section.news_section > ul > li')
+        for news in news:
+            print(news.get_text().replace("\n",":"))
+            a,b=news.get_text().replace("\n","").split("/")
+            newsModel = News(
+                    stock_code = stock_code,
+                    content = a[:-2],
+                    tstamp = a[-2:]+b
+            )
+            newsModel.save()
+
+
+
         return JsonResponse("OK",safe=False)
     return JsonResponse("OK",safe=False)
 class BuyStockView(

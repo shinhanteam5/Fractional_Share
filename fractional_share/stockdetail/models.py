@@ -26,10 +26,10 @@ class StockDetail(models.Model):
         verbose_name="주식상세리스트"
         verbose_name_plural ="주식상세리스트"
 
-class Comment(models.Model):
-    stock = models.ForeignKey(StockDetail,on_delete=models.CASCADE,verbose_name="상품")
+class News(models.Model):
+    stock_code =models.IntegerField(verbose_name='stock_code')
     content = models.TextField(verbose_name='뉴스 제목')
-    tstamp = models.DateTimeField(auto_now_add=True,verbose_name="등록일시")
+    tstamp = models.CharField(max_length=10,verbose_name='날짜')
     
     class Meta:
         db_table = "news"

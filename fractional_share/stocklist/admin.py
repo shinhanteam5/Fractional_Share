@@ -6,3 +6,5 @@ from .models import StockList
 @admin.register(StockList)
 class StockListAdmin(admin.ModelAdmin):
     pass
+
+

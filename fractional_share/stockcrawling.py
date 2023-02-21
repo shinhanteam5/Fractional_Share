@@ -22,7 +22,13 @@ if response.status_code == 200:
     #뉴스
     news  = soup.select('#content > div.section.new_bbs > div.sub_section.news_section > ul > li')
     for news in news:
-        print(news.get_text().replace("\n",":"))
+        a,b=news.get_text().replace("\n","").split("/")
+
+        print(a[:-2])
+
+        print(a[-2:]+b)
+
+
 
     #차트
     week  = 'https://ssl.pstatic.net/imgfinance/chart/item/area/week/900110.png?sidcode=1676905742196'
@@ -34,7 +40,7 @@ if response.status_code == 200:
     # print(info.get_text())
     # print(int(profit1.get_text()))
     # print(int(profit2.get_text()))
-    print(profit2.get_text)
+    # print(profit2.get_text)
 
     # print(int(sales1.get_text()))
     # print(int(sales2.get_text()))
