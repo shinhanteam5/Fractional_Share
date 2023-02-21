@@ -66,7 +66,6 @@ def submit(request,stock_code):
         stockdetail.save()
         news  = soup.select('#content > div.section.new_bbs > div.sub_section.news_section > ul > li')
         for news in news:
-            print(news.get_text().replace("\n",":"))
             a,b=news.get_text().replace("\n","").split("/")
             newsModel = News(
                     stock_code = stock_code,
