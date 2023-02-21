@@ -30,7 +30,11 @@ class StockDetailView(
 def submit(request,stock_code):
     # if not request.user.is_authenticated:
     #     return redirect('/member/login/')
-    print(request.POST)
+
+    stockdetail = StockDetail.objects.filter(stock_code=stock_code).order_by('id')
+    if stockdetail.exists():
+        return JsonResponse("이미있어서 POST안함",safe=False)
+
     if request.method == 'POST':
         if len(str(stock_code)) != 6:
             for _ in range(6 - len(str(stock_code))):
