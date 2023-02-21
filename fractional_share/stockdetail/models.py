@@ -4,7 +4,7 @@ class StockDetail(models.Model):
 
     name=models.CharField(max_length=128, verbose_name='stock_name')
     stock_code =  models.IntegerField(verbose_name='stock_code')
-    current_price = models.DecimalField(max_digits=7, decimal_places=2,verbose_name='current_price')
+    current_price = models.IntegerField(verbose_name='current_price')
     earn = models.DecimalField(max_digits=7, decimal_places=2,verbose_name='earn')
     earn_rate = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='earn_rate')
     info = models.CharField(max_length=256,verbose_name='info')
