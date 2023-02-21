@@ -44,12 +44,15 @@ def submit(request,stock_code):
                 earn = request.POST.get("vs"),
                 earn_rate =request.POST.get("fltRt"),
                 info =soup.select_one('#summary_info').get_text(),
+                
                 profit1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(2)').get_text().strip().replace(",","")),
                 profit2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(3) > em').get_text().strip().replace(",","")),
                 profit3 =int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(4)').get_text().strip().replace(",","")),
+                
                 sales1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(2)').get_text().strip().replace(",","")),
                 sales2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(3)').get_text().strip().replace(",","")),
                 sales3 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(4)').get_text().strip().replace(",","")),
+                
                 week = 'https://ssl.pstatic.net/imgfinance/chart/item/area/week/'+str(stock_code)+'.png?sidcode=1676905742196',
                 month3 = 'https://ssl.pstatic.net/imgfinance/chart/item/area/month3/'+str(stock_code)+'.png?sidcode=1676905742196',
                 year = 'https://ssl.pstatic.net/imgfinance/chart/item/area/year/'+str(stock_code)+'.png?sidcode=1676905742196',
