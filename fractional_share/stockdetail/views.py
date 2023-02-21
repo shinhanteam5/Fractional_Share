@@ -30,13 +30,17 @@ class StockDetailView(
 def submit(request,stock_code):
     # if not request.user.is_authenticated:
     #     return redirect('/member/login/')
-    print(request.POST.get("clpr"))
     if request.method == 'POST':
+        if len(str(stock_code)) != 6:
+            for _ in range(6 - len(str(stock_code))):
+                stock_code = '0' + str(stock_code)
+                
         url = 'https://finance.naver.com/item/main.naver?code='+str(stock_code)
         response = requests.get(url)
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
 
+        print(soup.select_one('#summary_info'))
         stockdetail = StockDetail(
                 stock_code =  stock_code,
                 current_price =request.POST.get("clpr"),
@@ -46,7 +50,7 @@ def submit(request,stock_code):
                 info =soup.select_one('#summary_info').get_text(),
                 
                 profit1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(2)').get_text().strip().replace(",","")),
-                profit2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(3) > em').get_text().strip().replace(",","")),
+                profit2 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(3)').get_text().strip().replace(",","")),
                 profit3 =int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(3) > td:nth-child(4)').get_text().strip().replace(",","")),
                 
                 sales1 = int(soup.select_one('#content > div.section.cop_analysis > div.sub_section > table > tbody > tr:nth-child(1) > td:nth-child(2)').get_text().strip().replace(",","")),
