@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'corsheaders',
     'django.contrib.staticfiles',
     'stocklist.apps.StocklistConfig',
     'stockdetail.apps.StockdetailConfig',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,3 +135,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SILENCED_SYSTEM_CHECKS=['urls.W002']
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS=True
