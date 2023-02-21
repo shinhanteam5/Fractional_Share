@@ -20,6 +20,7 @@ class StockDetailView(
 
     def get_queryset(self):
         stock_code = self.kwargs.get('pk')
+
         return StockDetail.objects.filter(stock_code=stock_code).order_by('id')
 #
     def get(self,request,*args,**kwargs):
@@ -66,7 +67,6 @@ class BuyStockView(
     def get_queryset(self):
         return HoldingStock.objects.all().order_by('id')
     def post(self,request,*args,**kwargs):
-        print(request.POST.get("invest_amount"))
         a = self.create(request,args,kwargs)
         p = Portfolio.objects.get()
         p.total_invest += int(request.POST.get("invest_amount"))
