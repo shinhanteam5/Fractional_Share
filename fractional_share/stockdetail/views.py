@@ -92,11 +92,14 @@ class BuyStockView(
         # stockdetail = StockDetail.objects.filter(stock_code=stock_code).order_by('id')
     def post(self,request,*args,**kwargs):
 
-        check_stock = HoldingStock.objects.get(stock_code=request.POST.get("stock_code"))
+        check_stock = HoldingStock.objects.filter(stock_code=request.POST.get("stock_code"))
+ 
         if check_stock:
-            check_stock.invest_amount+=int(request.POST.get("invest_amount"))-int(request.POST.get("invest_amount"))*0.01
-            check_stock.save()
+
+            check_stock[0].invest_amount+=int(request.POST.get("invest_amount"))-int(request.POST.get("invest_amount"))*0.01
+            check_stock[0].save()
         else:
+
             self.create(request,args,kwargs)
 
         p = Portfolio.objects.get()
