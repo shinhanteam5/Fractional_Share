@@ -87,15 +87,22 @@ class BuyStockView(
     generics.GenericAPIView
 ):
     serializer_class = BuyStockSerializer
-    def get_queryset(self):
+    def get_queryset(self,request):
         return HoldingStock.objects.all().order_by('id')
+        # stockdetail = StockDetail.objects.filter(stock_code=stock_code).order_by('id')
     def post(self,request,*args,**kwargs):
-        a = self.create(request,args,kwargs)
+
+        check_stock = HoldingStock.objects.get(stock_code=request.POST.get("stock_code"))
+        if check_stock:
+            check_stock.invest_amount+=int(request.POST.get("invest_amount"))-int(request.POST.get("invest_amount"))*0.01
+            check_stock.save()
+        else:
+            self.create(request,args,kwargs)
 
         p = Portfolio.objects.get()
         p.total_invest += int(request.POST.get("invest_amount"))-int(request.POST.get("invest_amount"))*0.01
         p.save()
-        return a
+        return JsonResponse("성공",safe=False)
     
 
 class NewsListView(

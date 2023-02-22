@@ -10,6 +10,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
         return [
             {
                 'stock_name': s.stock_name,
+                'stock_code': s.stock_code, 
                 'stock_share': s.stock_share, 
                 'invest_amount': s.invest_amount,
                 'earn_rate': s.earn_rate,

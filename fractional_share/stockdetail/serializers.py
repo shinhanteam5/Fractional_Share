@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import StockDetail,News
-from portfolio.models import Portfolio
 from holdingstock.models import HoldingStock
+from portfolio.models import Portfolio
 class StockDetailSerializer(serializers.ModelSerializer):
     # comment_count = serializers.SerializerMethodField();
 
@@ -16,7 +16,8 @@ class BuyStockSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         attrs['member_id']=1
         attrs['invest_amount']=attrs['invest_amount']-attrs['invest_amount']*0.01
-        # else:
+        # check_stock = HoldingStock.objects.filter(stock_code=attrs['stock_code']).order_by('id')
+        # if check_stock.exists():
         #     raise serializers.ValidationError("member is required")
         return attrs
     class Meta:
