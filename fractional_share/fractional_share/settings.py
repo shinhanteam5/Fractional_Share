@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'holdingstock.apps.HoldingstockConfig',
     'member.apps.MemberConfig',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,12 @@ SILENCED_SYSTEM_CHECKS=['urls.W002']
 
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS=True
+
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES': [
+    'rest_framework.authentication.TokenAuthentication',
+],
+'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.IsAuthenticated',
+],
+}
