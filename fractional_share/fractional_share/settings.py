@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'holdingstock.apps.HoldingstockConfig',
     'member.apps.MemberConfig',
     'rest_framework',
-    'drf_yasg',
+    # 'drf_yasg',
 ]
 
 MIDDLEWARE = [
