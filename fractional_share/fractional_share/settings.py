@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-2)&(3%_jg97&q7d6(-x388q!wjyhdye88*9!$7)ez2l8-9d02u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        "34.64.58.230"
+]
 
 
 # Application definition
@@ -44,7 +46,7 @@ INSTALLED_APPS = [
     'holdingstock.apps.HoldingstockConfig',
     'member.apps.MemberConfig',
     'rest_framework',
-    'drf_yasg',
+    # 'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -140,11 +142,11 @@ SILENCED_SYSTEM_CHECKS=['urls.W002']
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS=True
 
-REST_FRAMEWORK = {
-'DEFAULT_AUTHENTICATION_CLASSES': [
-    'rest_framework.authentication.TokenAuthentication',
-],
-'DEFAULT_PERMISSION_CLASSES': [
-    'rest_framework.permissions.IsAuthenticated',
-],
-}
+# REST_FRAMEWORK = {
+# 'DEFAULT_AUTHENTICATION_CLASSES': [
+#     'rest_framework.authentication.TokenAuthentication',
+# ],
+# 'DEFAULT_PERMISSION_CLASSES': [
+#     'rest_framework.permissions.IsAuthenticated',
+# ],
+# }
